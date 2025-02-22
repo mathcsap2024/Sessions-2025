@@ -1,0 +1,27 @@
+public class Human {
+    String name;
+    private Integer ID;
+    Double height;
+    Foot rightFoot, leftFoot;
+
+    public Human(String name, Integer ID) {
+        this.ID=ID;
+        this.name=name;
+        height=100.0;
+        rightFoot = new Foot();
+        leftFoot = new Foot();
+    }
+
+    class Foot {
+        Double height;
+
+        public Foot() {
+            this.height=Human.this.height/2;
+            ID=5;
+        }
+    }
+
+    static class Medicine {
+
+    }
+}
