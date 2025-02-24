@@ -3,6 +3,7 @@ public class Human {
     private Integer ID;
     Double height;
     Foot rightFoot, leftFoot;
+    Integer gitTest;
 
     public Human(String name, Integer ID) {
         this.ID=ID;
