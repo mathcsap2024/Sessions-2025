@@ -6,7 +6,7 @@ public class Human {
     Integer gitTest;
     Double gitDoubleTest;
 
-    public Human(String name, Integer ID) {
+    public Human(String name, Integer identity) {
         this.ID=ID;
         this.name=name;
         height=100.0;
