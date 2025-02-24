@@ -4,6 +4,7 @@ public class Human {
     Double height;
     Foot rightFoot, leftFoot;
     Integer gitTest;
+    Double gitDoubleTest
 
     public Human(String name, Integer ID) {
         this.ID=ID;
