@@ -39,6 +39,12 @@ public class FirstApplication implements Runnable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 rightPanel.setBackground(Color.CYAN);
+                rightPanel.setPreferredSize(new Dimension(
+                        rightPanel.getPreferredSize().width+10,
+                        rightPanel.getPreferredSize().height+10
+                        ));
+                jFrame.revalidate();
+                jFrame.repaint();
             }
         });
 
