@@ -11,6 +11,11 @@ public class Application implements Runnable{
         return b;
     }
 
+    public void add(LinkedList<? super String> linkedList, String value) {
+        System.out.println(value.toLowerCase());
+        linkedList.add(value);
+    }
+
     @Override
     public void run() {
         ArrayList<String> stringArrayList = new ArrayList<>();
@@ -26,6 +31,7 @@ public class Application implements Runnable{
 
         LinkedList<String> stringLinkedList = new LinkedList<>();
         LinkedList<Integer> integerLinkedList = new LinkedList<>();
+        LinkedList<Object> objectLinkedList = new LinkedList<>();
 
         stringLinkedList.add("First");
         LinkedList.Node<String> second = stringLinkedList.add("Second");
@@ -38,5 +44,27 @@ public class Application implements Runnable{
         integerLinkedList.add(20);
         integerLinkedList.add(30);
         integerLinkedList.print(System.out);
+
+        objectLinkedList.add(30);
+        objectLinkedList.add("30");
+
+//        add(integerLinkedList, 324);
+
+//        integerLinkedList = objectLinkedList;
+//        objectLinkedList = integerLinkedList;
+//        objectLinkedList.add("sad");
+
+        LinkedList<? super String> arbitraryLinkedList = new LinkedList<>();
+//        arbitraryLinkedList = integerLinkedList;
+        arbitraryLinkedList = objectLinkedList;
+        arbitraryLinkedList = stringLinkedList;
+        arbitraryLinkedList.add("Sdsa");
+
+        LinkedList generalLinkedList;
+        generalLinkedList = objectLinkedList;
+        generalLinkedList = objectLinkedList;
+        generalLinkedList = integerLinkedList;
+        generalLinkedList.add("324");
+        generalLinkedList.add(324);
     }
 }
