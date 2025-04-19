@@ -1,5 +1,7 @@
 package GUI;
 
+import APLogger.Logger;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,6 +10,8 @@ import java.util.Random;
 public class FirstApplication implements Runnable {
     @Override
     public void run() {
+        Logger logger = Logger.getInstance();
+
         JFrame jFrame = new JFrame("My First Frame");
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jFrame.setSize(new Dimension(800,600));
@@ -68,6 +72,7 @@ public class FirstApplication implements Runnable {
             public void mouseEntered(MouseEvent e) {
                 Random random = new Random();
                 button.setLocation(
+
                         new Point(
                                 random.nextInt(mainPanel.getWidth()),
                                 random.nextInt(mainPanel.getHeight())));
@@ -115,15 +120,23 @@ public class FirstApplication implements Runnable {
         button2.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
+                logger.log("Entered KeyTyped method.", Logger.Level.INFO);
+                logger.log("The key " + e.getKeyChar() + " is pressed.", Logger.Level.DEBUG);
+
                 if(e.getKeyChar()=='r') {
+                    logger.log("Handling key r", Logger.Level.DEBUG);
                     leftPanel.setBackground(Color.RED);
                 }
                 else if(e.getKeyChar()=='b') {
+                    logger.log("Handling key b", Logger.Level.DEBUG);
                     leftPanel.setBackground(Color.BLUE);
                 }
                 else if(e.getKeyChar()=='g') {
+                    logger.log("Handling key g", Logger.Level.DEBUG);
                     leftPanel.setBackground(Color.GREEN);
                 }
+
+                logger.log("Leaving KeyTyped method", Logger.Level.INFO);
             }
 
             @Override
