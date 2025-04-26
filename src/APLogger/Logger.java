@@ -1,5 +1,7 @@
 package APLogger;
 
+import java.awt.*;
+
 public class Logger {
     public enum Level {
         OFF(0),
@@ -21,19 +23,21 @@ public class Logger {
     }
 
     private static Logger instance = null;
+    private static final Object singletonWatcher = new Object();
+    private static final Object staticLogWatcher = new Object();
 
     public static Logger getInstance() {
-        if(instance==null) {
-            Level level = Level.INFO;
-            try {
-                level = Level.valueOf(System.getenv("LogLevel"));
-            }
-            catch (IllegalArgumentException ex){
-            }
-            catch (NullPointerException ex) {
+        synchronized (singletonWatcher) {
+            if (instance == null) {
+                Level level = Level.INFO;
+                try {
+                    level = Level.valueOf(System.getenv("LogLevel"));
+                } catch (IllegalArgumentException ex) {
+                } catch (NullPointerException ex) {
 
+                }
+                instance = new Logger("GlobalLogger", level);
             }
-            instance = new Logger("GlobalLogger", level);
         }
         return instance;
     }
@@ -66,14 +70,35 @@ public class Logger {
         return name;
     }
 
+    private final Object o=new Object();
+
     public synchronized void log(String message, Level level) {
         //If called level is lower than logger level
 
-        if(level.getValue()<=this.level.getValue()) {
-            System.err.print(getLevel().toString());
-            System.err.print(":");
-            System.err.print(" ");
-            System.err.println(message);
+        if (level.getValue() <= this.level.getValue()) {
+            synchronized (staticLogWatcher) {
+                System.err.print(getLevel().toString());
+                System.err.print(":");
+                System.err.print(" ");
+                System.err.println(message);
+            }
+        }
+    }
+
+    public synchronized void logWithDetails(String message, Level level) {
+        //If called level is lower than logger level
+
+        if (level.getValue() <= this.level.getValue()) {
+            synchronized (staticLogWatcher) {
+                System.err.print(System.currentTimeMillis());
+                System.err.print(" ");
+                System.err.print("-");
+                System.err.print(" ");
+                System.err.print(getLevel().toString());
+                System.err.print(":");
+                System.err.print(" ");
+                System.err.println(message);
+            }
         }
     }
 }
