@@ -1,12 +1,12 @@
 package Concurency;
 
 import APLogger.Logger;
+import Concurency.Semaphore.APSemaphore;
+import University.Point;
 
-import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
 
 public class Application implements Runnable{
 
@@ -17,6 +17,7 @@ public class Application implements Runnable{
 
         PipedInputStream pipedInputStream;
         PipedOutputStream pipedOutputStream;
+        APSemaphore semaphore = new APSemaphore(1, 0);
 
         try {
             pipedInputStream = new PipedInputStream();
@@ -31,16 +32,30 @@ public class Application implements Runnable{
                 for(int i=0;i<10000;i++) {
                     Logger.getInstance().log("A", Logger.Level.INFO);
                 }
-                PrintStream printStream = new PrintStream(pipedOutputStream);
-                printStream.println("Done.");
-                printStream.flush();
+                try {
+                    Point point = new Point(12.5,13.2);
+                    ObjectOutputStream objectOutputStream = new ObjectOutputStream(pipedOutputStream);
+                    objectOutputStream.writeObject(point);
+                    objectOutputStream.flush();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                semaphore.release();
             }
         });
+
         Thread b = new Thread(new Runnable() {
             @Override
             public void run() {
-                Scanner scanner = new Scanner(pipedInputStream);
-                String result = scanner.nextLine();
+                semaphore.acquire();
+
+                String result = "B";
+                try {
+                    ObjectInputStream objectInputStream = new ObjectInputStream(pipedInputStream);
+                    result = objectInputStream.readObject().toString();
+                } catch (IOException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
 
                 for(int i=0;i<10000;i++) {
                     Logger.getInstance().logWithDetails(result, Logger.Level.INFO);
@@ -52,6 +67,10 @@ public class Application implements Runnable{
 
         a.start();
         b.start();
-//        myThread.start();
+        myThread.start();
+
+        Scanner scanner = new Scanner(System.in);
+        scanner.next();
+        myThread.interrupt();
     }
 }
