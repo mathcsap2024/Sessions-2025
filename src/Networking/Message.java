@@ -1,4 +1,4 @@
-package Networking.Server;
+package Networking;
 
 public class Message {
     private String destination;

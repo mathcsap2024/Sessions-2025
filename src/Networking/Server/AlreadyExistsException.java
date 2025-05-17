@@ -1,4 +1,4 @@
 package Networking.Server;
 
-public class AlreadyExistsException {
+public class AlreadyExistsException extends Exception{
 }
