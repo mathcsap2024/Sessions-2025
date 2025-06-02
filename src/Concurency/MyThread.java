@@ -6,7 +6,6 @@ public class MyThread extends Thread{
     @Override
     public void run() {
         super.run();
-
 //        Logger logger = new Logger("MyLogger");
         Logger logger = Logger.getInstance();
         logger.log("Entered run method.", Logger.Level.INFO);
